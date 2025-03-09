@@ -4,10 +4,11 @@ body {
   margin: 0;
   padding: 0;
   background-color: #f4f4f9;
+  color: #333;
 }
 
 a {
-  color: inherit;
+  color: #198754;
   text-decoration: none;
 }
 

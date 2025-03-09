@@ -4,9 +4,9 @@
   }
   
   .home h1 {
-    color: #282c34;
+    color: #198754; /* Green color for the heading */
   }
   
   .home p {
-    color: #61dafb;
+    color: #333;
   }
