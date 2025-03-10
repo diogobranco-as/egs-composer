@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
+from routers.AuthRouter import AuthRouter
 
 app = FastAPI(
     title = "playerxpress-api",
@@ -18,3 +18,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(AuthRouter)
+
+@app.get("/")
+async def root():
+    return {"message": "Welcome to PlayerXpress API!"}
