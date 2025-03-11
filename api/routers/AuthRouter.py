@@ -23,6 +23,25 @@ def get_db_connection():
     )
     return con
 
+@AuthRouter.get("/users")
+async def get_users():
+    try:
+        #connect to db
+        conn = get_db_connection()
+        cur = conn.cursor(cursor_factory=RealDictCursor)
+
+        cur.execute("SELECT * FROM users;")
+        users = cur.fetchall()
+
+        #commit and close connection
+        conn.commit()
+        cur.close()
+        conn.close()
+
+        return users
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 @AuthRouter.post("/signup")
 async def signup(user: User):
     try:
