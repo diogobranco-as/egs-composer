@@ -1,6 +1,7 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, UUID4
+from typing import Optional
 
 class User(BaseModel):
-    user_id: str
-    email: str
-    name: str | None = None
+    user_id: UUID4 
+    user_name: Optional[str] = None  
+    user_email: str  
