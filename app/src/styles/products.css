@@ -1,0 +1,94 @@
+/* products.css */
+
+.products {
+  padding: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.product-box {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.product-box:hover {
+  transform: translateY(-5px);
+}
+
+.product-box h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.product-box p {
+  margin: 8px 0;
+  font-size: 1rem;
+  color: #555;
+}
+
+.product-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.reviews-button, .buy-button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.reviews-button {
+  background-color: #007bff;
+  color: white;
+}
+
+.reviews-button:hover {
+  background-color: #0056b3;
+}
+
+.buy-button {
+  background-color: #28a745;
+  color: white;
+}
+
+.buy-button:hover {
+  background-color: #218838;
+}
+
+.load-more-container {
+  display: flex;
+  justify-content: center; /* Center the button horizontally */
+  padding: 20px;
+}
+
+.load-more-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  background-color: #007bff;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Match the shadow of product boxes */
+}
+
+.load-more-button:hover {
+  background-color: #0056b3;
+}

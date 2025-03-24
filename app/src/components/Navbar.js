@@ -15,10 +15,10 @@ const Navbar = () => {
           <Link to="/" className="navLink">Home</Link>
         </li>
         <li className="navItem">
-          <Link to="/page1" className="navLink">Page 1</Link>
+          <Link to="/products" className="navLink">Products</Link>
         </li>
         <li className="navItem">
-          <Link to="/page2" className="navLink">Page 2</Link>
+          <Link to="/page2" className="navLink">Chat</Link>
         </li>
       </ul>
       <div className="authSection">
