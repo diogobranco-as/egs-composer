@@ -1,7 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers.AuthRouter import AuthRouter
 from routers.ProductRouter import ProductRouter
+from routers.ReviewComposerRouter import ReviewComposerRouter  
+from middleware.AuthMiddleware import get_current_user 
 from dotenv import load_dotenv
 import os
 
@@ -24,8 +25,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(AuthRouter)
 app.include_router(ProductRouter)
+app.include_router(ReviewComposerRouter) 
 
 @app.get("/")
 async def root():

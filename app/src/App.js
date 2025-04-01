@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Auth0Provider } from '@auth0/auth0-react';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Products from './pages/Products';
@@ -11,6 +12,16 @@ import './styles/app.css';
 
 function App() {
   return (
+    <Auth0Provider
+      domain="dev-ax53r2dultf84l0z.eu.auth0.com"
+      clientId="813mXBOU53qMhXEd80gZKuKrfh5c3ec7"
+      authorizationParams={{
+        redirect_uri: window.location.origin,
+        audience: "https://playerxpress-api.com",
+        scope: "openid profile email"
+      }}
+      cacheLocation="localstorage"
+    >
     <Router>
       <Navbar />
       <Routes>
@@ -21,6 +32,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
       </Routes>
     </Router>
+    </Auth0Provider>
   );
 }
 
