@@ -8,6 +8,10 @@ const ProductBox = ({ product }) => {
     navigate(`/products/${product.product_id}/reviews`);
   };
 
+  const handleBuyClick = () => {
+    navigate(`/payment`);
+  }
+
   return (
     <div className="product-box">
       <h2>{product.product_name}</h2>
@@ -16,7 +20,7 @@ const ProductBox = ({ product }) => {
       <p><strong>Provider:</strong> {product.product_seller}</p>
       <div className="product-actions">
         <button className="reviews-button" onClick={handleReviewClick}>Reviews</button>
-        <button className="buy-button">Buy</button>
+        <button className="buy-button" onClick={handleBuyClick}>Buy</button>
       </div>
     </div>
   );

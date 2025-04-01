@@ -1,0 +1,12 @@
+.payment {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .payment h1 {
+    color: #198754;
+  }
+  
+  .payment p {
+    color: #333;
+  }
