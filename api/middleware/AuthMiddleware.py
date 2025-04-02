@@ -58,7 +58,7 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
     
     try:
         payload = await verify_token(token)
-        print(f"[DEBUG] Payload: {payload}", flush=True)
+        
         # Extract the UUID part from the Auth0 user ID
         auth0_user_id = payload["sub"]
         user_uuid = auth0_user_id.split("|")[-1]  # Takes everything after "auth0|"
