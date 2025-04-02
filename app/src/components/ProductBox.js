@@ -9,7 +9,7 @@ const ProductBox = ({ product }) => {
   };
 
   const handleBuyClick = () => {
-    navigate(`/payment`);
+    navigate(`/payment/`);
   }
 
   return (
