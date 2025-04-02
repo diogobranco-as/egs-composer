@@ -8,7 +8,7 @@ const ProductReviews = () => {
   return (
     <div className="product-reviews-page">
       <h2>Product Reviews</h2>
-      <ReviewWidget productId={productId} />
+      {productId && <ReviewWidget productId={productId} />}
     </div>
   );
 };
