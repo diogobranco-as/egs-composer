@@ -50,7 +50,6 @@ async def get_purchased_by_user(user_id: UUID):
 async def create_purchased(user_id: UUID, purchased: Purchased):
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=RealDictCursor)
-    print (f"Received payment_id: {purchased.payment_id}, product_id: {purchased.product_id}, user_id: {purchased.user_id}")
     try:
         if user_id != purchased.user_id:
             raise HTTPException(status_code=400, detail="User ID mismatch")
@@ -70,7 +69,16 @@ async def create_purchased(user_id: UUID, purchased: Purchased):
         )
         new_purchased = cursor.fetchone()
         conn.commit()
-        return new_purchased
+        
+        cursor.execute("""
+            SELECT p.*, pr.product_name
+            FROM purchased p
+            JOIN products pr ON p.product_id = pr.product_id
+            WHERE p.payment_id = %s
+        """, (new_purchased['payment_id'],))
+        result_with_name = cursor.fetchone()
+        
+        return result_with_name
 
     except Exception as e:
         print("Error during INSERT:", e)
