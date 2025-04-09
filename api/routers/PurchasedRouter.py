@@ -3,9 +3,10 @@ from models.Purchased import Purchased
 from typing import List, Optional
 import psycopg2
 from psycopg2.extras import RealDictCursor
+from uuid import UUID
 import os
 PurchasedRouter = APIRouter(
-    previx ="/v1/purchased",
+    prefix ="/v1/purchased",
     tags=["purchased"],
 )
 
@@ -19,88 +20,62 @@ def get_db_connection():
     )
     return conn
 
-@PurchasedRouter.get("/", response_model=List[Purchased])
-async def get_all_purchased(
-    product_id: Optional[str] = Query(None, description="Filter by product ID"),
-    user_id: Optional[str] = Query(None, description="Filter by user ID"),
-    limit: int = Query(25, description="Limit the number of results"),
-    offset: int = Query(0, description="Offset for pagination")
-):
+@PurchasedRouter.get("/{user_id}", response_model=List[Purchased])
+async def get_purchased_by_user(user_id: UUID):
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=RealDictCursor)
-
     try:
-        query = "SELECT * FROM purchased"
-        filters = []
-        params = []
-
-        if product_id:
-            filters.append("product_id = %s")
-            params.append(product_id)
-
-        if user_id:
-            filters.append("user_id = %s")
-            params.append(user_id)
-
-        if filters:
-            query += " WHERE " + " AND ".join(filters)
-
-        query += " LIMIT %s OFFSET %s"
-        params.extend([limit, offset])
-
-        cursor.execute(query, params)
+        cursor.execute("""
+            SELECT p.payment_id, p.product_id, p.user_id,
+                   pr.product_name
+            FROM purchased p
+            JOIN products pr ON p.product_id = pr.product_id
+            WHERE p.user_id = %s
+        """, (str(user_id),))
         purchased_items = cursor.fetchall()
 
-        return purchased_items
+        if not purchased_items:
+            raise HTTPException(status_code=404, detail="Purchased item not found")
 
+        return purchased_items
+    
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
+    
     finally:
         cursor.close()
         conn.close()
         
-        
-@PurchasedRouter.post("/", response_model=Purchased)
-async def create_purchased(purchased: Purchased):
+@PurchasedRouter.post("/{user_id}", response_model=Purchased)
+async def create_purchased(user_id: UUID, purchased: Purchased):
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=RealDictCursor)
-
+    print (f"Received payment_id: {purchased.payment_id}, product_id: {purchased.product_id}, user_id: {purchased.user_id}")
     try:
+        if user_id != purchased.user_id:
+            raise HTTPException(status_code=400, detail="User ID mismatch")
+            
+        cursor.execute(
+            "SELECT * FROM purchased WHERE payment_id = %s",
+            (purchased.payment_id,)
+        )
+        existing = cursor.fetchone()
+        
+        if existing:
+            raise HTTPException(status_code=400, detail="Payment already processed")
+        
         cursor.execute(
             "INSERT INTO purchased (payment_id, product_id, user_id) VALUES (%s, %s, %s) RETURNING *",
-            (purchased.payment_id, purchased.product_id, purchased.user_id)
+            (purchased.payment_id, str(purchased.product_id), str(user_id))
         )
         new_purchased = cursor.fetchone()
         conn.commit()
         return new_purchased
 
     except Exception as e:
+        print("Error during INSERT:", e)
         raise HTTPException(status_code=500, detail=str(e))
-
     finally:
         cursor.close()
         conn.close()
         
-#delete a purchase id
-@PurchasedRouter.delete("/{purchase_id}", response_model=Purchased)
-async def delete_purchased(purchase_id: str):
-    conn = get_db_connection()
-    cursor = conn.cursor(cursor_factory=RealDictCursor)
-
-    try:
-        cursor.execute("DELETE FROM purchased WHERE purchase_id = %s RETURNING *", (purchase_id,))
-        deleted_purchased = cursor.fetchone()
-        conn.commit()
-
-        if not deleted_purchased:
-            raise HTTPException(status_code=404, detail="Purchased item not found")
-
-        return deleted_purchased
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-    finally:
-        cursor.close()
-        conn.close()

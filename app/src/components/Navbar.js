@@ -20,6 +20,9 @@ const Navbar = () => {
         <li className="navItem">
           <Link to="/page2" className="navLink">Chat</Link>
         </li>
+        <li className="navItem">
+          <Link to="/purchased" className="navLink">Purchased</Link>
+        </li>
       </ul>
       <div className="authSection">
         {!isAuthenticated ? (

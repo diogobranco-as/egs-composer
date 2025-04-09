@@ -6,8 +6,8 @@ import Home from './pages/Home';
 import Products from './pages/Products';
 import ProductReviews from './pages/ProductReviews';
 import Page2 from './pages/Page2';
-import Payment from './pages/Payment';
 import Profile from './components/Profile';
+import Purchased from './pages/Purchased';
 import './styles/global.css';
 import './styles/app.css';
 
@@ -30,8 +30,8 @@ function App() {
         <Route path="/products" element={<Products />} />
         <Route path="/products/:productId/reviews" element={<ProductReviews />} />
         <Route path="/page2" element={<Page2 />} />
-        <Route path="/payment/:productId/" element={<Payment />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/purchased" element={<Purchased />} />
       </Routes>
     </Router>
     </Auth0Provider>

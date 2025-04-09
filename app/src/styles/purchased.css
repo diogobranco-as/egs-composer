@@ -1,0 +1,78 @@
+.purchased {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .purchased h1 {
+    color: #282c34;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  
+  .purchased-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  
+  .purchased-item {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+  
+  .purchased-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  .purchased-item h2 {
+    color: #282c34;
+    margin-bottom: 10px;
+  }
+  
+  .purchased-item p {
+    margin: 8px 0;
+    color: #555;
+  }
+  
+  .payment-id {
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: #666;
+    word-break: break-all;
+  }
+  
+  .details-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 100%;
+    transition: background-color 0.2s;
+  }
+  
+  .details-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .loading, .error, .no-items {
+    text-align: center;
+    padding: 20px;
+    font-size: 1.2rem;
+  }
+  
+  .error {
+    color: #dc3545;
+  }
+  
+  .no-items {
+    color: #666;
+  }

@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import ProductBox from '../components/ProductBox';
 import '../styles/products.css';
+import { useAuth0 } from '@auth0/auth0-react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 const Products = () => {
   const [products, setProducts] = useState([]);
@@ -8,10 +10,55 @@ const Products = () => {
   const [error, setError] = useState(null);
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(true);
+  const { user } = useAuth0();
+  const [searchParams] = useSearchParams();
+  const paymentId = searchParams.get('paymentId');
+  const productId = searchParams.get('productId');
+  const hasProcessedPurchase = useRef(false);
+  const navigate = useNavigate();
+
 
   const limit = 10; // increase later (20? 40?)
   const hasFetched = useRef(false);
 
+  const createPurchasedRecord = useCallback(async () => {
+    console.log('Creating purchased record...');
+    const user_id = user?.sub.split('|')[1];
+    
+    if (!paymentId || !productId || !user_id || hasProcessedPurchase.current) return;
+  
+    try {
+      const response = await fetch(`http://localhost:8000/v1/purchased/${user_id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          payment_id: paymentId,
+          product_id: productId,
+          user_id: user_id, 
+        }),
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || 'Failed to create purchased record');
+      }
+  
+      const result = await response.json();
+      console.log('Purchase recorded:', result);
+      hasProcessedPurchase.current = true;
+  
+      // Clean up URL params
+      searchParams.delete('paymentId');
+      searchParams.delete('productId');
+      navigate({ search: searchParams.toString() }, { replace: true });
+      
+    } catch (error) {
+      console.error('Error creating purchased record:', error.message);
+    }
+  }, [paymentId, productId, user?.sub, searchParams, navigate]);
+  
   const fetchProducts = useCallback(async () => {
     if (hasFetched.current) return; 
     hasFetched.current = true;
@@ -38,7 +85,8 @@ const Products = () => {
   
   useEffect(() => {
     fetchProducts();
-  }, [fetchProducts]); 
+    createPurchasedRecord();
+  }, [fetchProducts, createPurchasedRecord]); 
 
   // Reset hasFetched when the "Load More" button is clicked
   const handleLoadMore = () => {
