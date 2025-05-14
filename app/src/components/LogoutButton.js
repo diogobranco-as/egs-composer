@@ -4,9 +4,14 @@ import '../styles/button.css';
 const LogoutButton = () => {
   const { logout, isAuthenticated } = useAuth0();
 
+  const handleLogout = () => {
+    localStorage.removeItem("chatNickname");
+    logout();
+  }
+
   return (
     isAuthenticated && (
-      <button className="logout" onClick={() => logout()}>
+      <button className="logout" onClick={handleLogout}>
         Sign Out
       </button>
     )
