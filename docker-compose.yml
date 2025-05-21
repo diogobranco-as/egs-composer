@@ -1,0 +1,44 @@
+version: "3.8"
+
+services:
+  database:
+    image: postgres:15
+    container_name: postgres-db-composer
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: formigos1
+      POSTGRES_DB: xpressdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  api:
+    build:
+      context: ./api
+    command: >
+      sh -c "
+        python init_db.py &&
+        uvicorn main:app --host 0.0.0.0 --port 8000
+      "
+    container_name: fastapi-api-composer
+    environment:
+      DATABASE_URL: postgresql://postgres:formigos1@database:5432/xpressdb
+      AUTH0_DOMAIN: dev-ax53r2dultf84l0z.eu.auth0.com
+      AUTH0_AUDIENCE: https://playerxpress-api.com
+    depends_on:
+      - database
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build:
+      context: ./app
+    container_name: react-frontend-composer
+    ports:
+      - "3000:80"
+    depends_on:
+      - api
+
+volumes:
+  postgres_data:
