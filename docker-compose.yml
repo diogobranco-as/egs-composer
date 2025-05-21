@@ -12,17 +12,19 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/init.sql
 
   api:
     build:
       context: ./api
-    command: >
-      sh -c "
-        python init_db.py &&
-        uvicorn main:app --host 0.0.0.0 --port 8000
-      "
+    command: uvicorn main:app --host 0.0.0.0 --port 8000
     container_name: fastapi-api-composer
     environment:
+      DB_HOST: database
+      DB_NAME: xpressdb
+      DB_USER: postgres
+      DB_PASSWORD: formigos1
+      DB_PORT: "5432"
       DATABASE_URL: postgresql://postgres:formigos1@database:5432/xpressdb
       AUTH0_DOMAIN: dev-ax53r2dultf84l0z.eu.auth0.com
       AUTH0_AUDIENCE: https://playerxpress-api.com
