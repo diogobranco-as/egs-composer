@@ -1,3 +1,4 @@
+CREATE EXTENSION IF NOT EXISTS "pgcrypto"; -- Enable UUID generation
 -- Create tables
 CREATE TABLE IF NOT EXISTS products (
     product_id UUID PRIMARY KEY,
@@ -19,11 +20,11 @@ CREATE TABLE IF NOT EXISTS product_id_mapping (
 );
 
 CREATE TABLE IF NOT EXISTS users (
-    user_id UUID PRIMARY KEY,
-    user_name TEXT NOT NULL,
+    user_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    auth0_id TEXT NOT NULL UNIQUE,
+    user_name TEXT,
     user_email TEXT NOT NULL,
-    password_hash TEXT NOT NULL,
-    email_verified BOOLEAN DEFAULT FALSE
+    email_verified BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 -- Insert products data
