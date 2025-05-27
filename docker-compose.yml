@@ -38,7 +38,7 @@ services:
       context: ./app
     container_name: react-frontend-composer
     ports:
-      - "3000:80"
+      - "3000:3000"
     depends_on:
       - api
 
