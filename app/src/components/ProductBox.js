@@ -15,7 +15,7 @@ const ProductBox = ({ product }) => {
         currency: 'EUR',
         product_id: product.product_id
       };
-      window.location.href = `http://localhost:5173/payment/success?amount=${paymentData.amount}&currency=${paymentData.currency}&product_id=${paymentData.product_id}`;      
+      window.location.href = `http://localhost:5173?amount=${paymentData.amount}&currency=${paymentData.currency}&product_id=${paymentData.product_id}`;      
     } catch (error) {
       console.error('6. Payment error:', error.message);
       if (error.name === 'TypeError') {
