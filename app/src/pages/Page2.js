@@ -18,7 +18,7 @@ const Page2 = () => {
   return (
     <div className="page2" style={{ width: '100%', height: '100vh' }}>
       <iframe 
-        src={`http://localhost:5000?nickname=${encodeURIComponent(nickname)}`} 
+        src={`http://localhost:8080?nickname=${encodeURIComponent(nickname)}`} 
         style={{ width: '100%', height: '100%', border: 'none' }}
         title="Chat Interface"
       />
