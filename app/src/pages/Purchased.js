@@ -1,4 +1,3 @@
-// src/pages/Purchased.js
 import React, { useEffect, useState, useCallback } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import PurchasedGame from '../components/PurchasedGame';
@@ -6,7 +5,7 @@ import '../styles/purchased.css';
 
 const Purchased = () => {
   const { user } = useAuth0();
-  const userId = user?.sub?.split('|')[1];
+  const userId = user?.sub
 
   const [purchasedItems, setPurchasedItems] = useState([]);
   const [loading, setLoading] = useState(false);

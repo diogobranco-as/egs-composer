@@ -9,9 +9,9 @@ CREATE TABLE IF NOT EXISTS products (
 );
 
 CREATE TABLE IF NOT EXISTS purchased (
-    payment_id UUID PRIMARY KEY,
+    payment_id TEXT PRIMARY KEY,
     product_id UUID REFERENCES products(product_id),
-    user_id UUID NOT NULL
+    user_id TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS product_id_mapping (

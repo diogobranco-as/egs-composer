@@ -23,12 +23,13 @@ const Products = () => {
 
   const createPurchasedRecord = useCallback(async () => {
     console.log('Creating purchased record...');
-    const user_id = user?.sub.split('|')[1];
     
-    if (!paymentId || !productId || !user_id || hasProcessedPurchase.current) return;
+    if (!paymentId || !productId || !user?.sub || hasProcessedPurchase.current) return;
   
     try {
-      const response = await fetch(`http://localhost:8000/v1/purchased/${user_id}`, {
+
+      const auth0_id = encodeURIComponent(user.sub);
+      const response = await fetch(`http://localhost:8000/v1/purchased/${auth0_id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -36,7 +37,7 @@ const Products = () => {
         body: JSON.stringify({
           payment_id: paymentId,
           product_id: productId,
-          user_id: user_id, 
+          user_id: user.sub, 
         }),
       });
   
