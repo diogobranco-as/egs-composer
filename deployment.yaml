@@ -1,0 +1,221 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-initdb
+  namespace: "104341"
+data:
+  init.sql: |
+    CREATE EXTENSION IF NOT EXISTS "pgcrypto"; -- Enable UUID generation
+    -- Create tables
+    CREATE TABLE IF NOT EXISTS products (
+        product_id UUID PRIMARY KEY,
+        product_type TEXT NOT NULL,
+        product_name TEXT NOT NULL,
+        product_price REAL NOT NULL,
+        product_seller TEXT
+    );
+
+    CREATE TABLE IF NOT EXISTS purchased (
+        payment_id TEXT PRIMARY KEY,
+        product_id UUID REFERENCES products(product_id),
+        user_id TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS product_id_mapping (
+        id integer NOT NULL PRIMARY KEY,
+        uuid UUID NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS users (
+        user_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        auth0_id TEXT NOT NULL UNIQUE,
+        user_name TEXT,
+        user_email TEXT NOT NULL,
+        email_verified BOOLEAN NOT NULL DEFAULT FALSE
+    );
+
+    -- Insert products data
+    INSERT INTO products (product_id, product_type, product_name, product_price, product_seller) VALUES
+    ('0def65e3-8460-408b-9076-32dcf4c1e48d', 'game', 'Elden Ring', 59.99, 'FromSoftware Store'),
+    ('16569918-1669-4bc8-ada4-3038b550b40f', 'game', 'The Witcher 3', 39.99, 'CD Projekt Store'),
+    ('39f033bf-38aa-4daf-b7c9-cee21f3f5a05', 'game', 'Cyberpunk 2077', 49.99, 'CD Projekt Store'),
+    ('38f3626f-759c-410b-bd5e-86735613129e', 'game', 'Dark Souls 3', 29.99, 'FromSoftware Store'),
+    ('b7fe6e92-7315-4150-8b68-cc6613f4da2b', 'game', 'Bloodborne', 19.99, 'PlayStation Store'),
+    ('d3c731a6-8bb8-44de-b657-9595fee78943', 'game', 'Red Dead Redemption 2', 69.99, 'Rockstar Store'),
+    ('982976ff-cd94-42b3-a999-bae90de9cc55', 'game', 'GTA V', 29.99, 'Rockstar Store'),
+    ('f2dbb7a1-fe4e-419d-8d89-fe0423dc5440', 'game', 'Hollow Knight', 14.99, 'Team Cherry'),
+    ('797ffcfe-7bab-46e7-90a6-d709c7349f04', 'game', 'Celeste', 9.99, 'Maddy Makes Games'),
+    ('8167ad2c-86d0-4981-b3b3-5bdd2af1bb39', 'game', 'Doom Eternal', 39.99, 'Bethesda Store'),
+    ('fd89e37b-cb92-4476-8869-fd141728e9d5', 'game', 'Sekiro: Shadows Die Twice', 49.99, 'FromSoftware Store'),
+    ('b936b05a-b3b1-4a94-86fc-8d76e65e6089', 'game', 'Monster Hunter World', 34.99, 'Capcom Store'),
+    ('fdf7b833-0e0e-461a-a2ae-a53fa15a37b1', 'game', 'Resident Evil 4 Remake', 59.99, 'Capcom Store'),
+    ('22b667a0-d178-4f12-a45f-a34788d5d6f3', 'game', 'God of War', 49.99, 'PlayStation Store'),
+    ('3b495454-5de8-4543-8ee1-7ed4feb2de30', 'game', 'Hades', 24.99, 'Supergiant Games'),
+    ('8a294a0e-d92a-43e5-a333-1423c29937fc', 'game', 'Stardew Valley', 14.99, 'ConcernedApe'),
+    ('3ff7dfba-999d-41b0-8758-e323719bba22', 'game', 'Terraria', 9.99, 'Re-Logic'),
+    ('6bd887b8-b45e-4354-8f72-f72d500646a4', 'game', 'Baldur''s Gate 3', 69.99, 'Larian Studios'),
+    ('97bac1e1-141c-44a2-ae3f-cae4fcb57891', 'game', 'Persona 5 Royal', 49.99, 'Atlus'),
+    ('d051422e-fef2-4252-967a-f12d65ab874e', 'game', 'The Legend of Zelda: Breath of the Wild', 59.99, 'Nintendo Store'),
+    ('91d63155-3201-4736-a8d1-9380b1b98df2', 'game', 'Super Mario Odyssey', 49.99, 'Nintendo Store'),
+    ('189d9817-a261-47b4-aec3-1b86ea67e38a', 'game', 'Metroid Dread', 39.99, 'Nintendo Store'),
+    ('9736ad03-2ba0-408d-af56-c61c818bf04b', 'game', 'Fire Emblem: Three Houses', 44.99, 'Nintendo Store'),
+    ('a64715d5-862a-444e-85a5-0259d5792029', 'game', 'Dead Cells', 24.99, 'Motion Twin'),
+    ('433cda98-bd41-4ffe-8ef7-d41436f08092', 'game', 'Cuphead', 19.99, 'Studio MDHR'),
+    ('e7b012ed-169e-4a9e-bbd3-b8c1998c3416', 'game', 'Undertale', 14.99, 'Toby Fox'),
+    ('18bedbb9-a6f7-4d1f-9a63-c63adfee37c3', 'game', 'Disco Elysium', 39.99, 'ZA/UM'),
+    ('5ba190f9-d35b-4ec8-acc0-dd84c611a6d7', 'game', 'Divinity: Original Sin 2', 44.99, 'Larian Studios'),
+    ('178f9697-fc8b-4c57-8bf3-d59a012df251', 'game', 'Slay the Spire', 19.99, 'MegaCrit'),
+    ('1d7f8d16-3cb0-4ef2-8571-f30d8e54f59e', 'game', 'The Outer Worlds', 29.99, 'Obsidian Entertainment'),
+    ('610fac82-54b0-4485-b70d-0238149b9a86', 'game', 'Prey', 14.99, 'Arkane Studios'),
+    ('22c86d17-2b62-41e0-93e2-81059a5eb51a', 'game', 'Control', 34.99, 'Remedy Entertainment'),
+    ('d93feac2-fd8a-4e9c-b38c-354c947f7187', 'game', 'Bioshock Infinite', 19.99, '2K Games'),
+    ('76bafc93-4168-409d-b928-ec29bba8fb3f', 'game', 'Dishonored 2', 24.99, 'Arkane Studios'),
+    ('5aeb871f-f753-40c5-b585-0811beebe530', 'game', 'The Last of Us Part II', 49.99, 'Naughty Dog'),
+    ('bdfc8f68-e55b-4b7b-bd4c-1181b4d86aad', 'game', 'Death Stranding', 39.99, 'Kojima Productions'),
+    ('fcaf36f7-c78a-4c8b-8363-7ed73a91c621', 'game', 'Ghost of Tsushima', 59.99, 'Sucker Punch Productions'),
+    ('81153fda-72fc-4e91-8a06-4416e2c51b3a', 'game', 'Star Wars Jedi: Fallen Order', 29.99, 'Respawn Entertainment'),
+    ('4679dd88-4bd3-44af-bdbb-88f68c578f4d', 'game', 'Horizon Zero Dawn', 29.99, 'Guerrilla Games');
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-db-composer
+  namespace: "104341"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-db-composer
+  template:
+    metadata:
+      labels:
+        app: postgres-db-composer
+    spec:
+      containers:
+      - name: postgres-db-composer
+        image: postgres:15
+        env:
+        - name: POSTGRES_USER
+          value: "postgres"
+        - name: POSTGRES_PASSWORD
+          value: "formigos1"
+        - name: POSTGRES_DB
+          value: "xpressdb"
+        ports:
+        - containerPort: 5432
+        volumeMounts:
+        - name: postgres-data
+          mountPath: /var/lib/postgresql/data
+        - name: initdb
+          mountPath: /docker-entrypoint-initdb.d
+      volumes:
+      - name: postgres-data
+        emptyDir: {}
+      - name: initdb
+        configMap:
+          name: postgres-initdb
+          items:
+          - key: init.sql
+            path: init.sql
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-db-composer
+  namespace: "104341"
+spec:
+  ports:
+    - port: 5432
+  selector:
+    app: postgres-db-composer
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastapi-api-composer
+  namespace: "104341"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fastapi-api-composer
+  template:
+    metadata:
+      labels:
+        app: fastapi-api-composer
+    spec:
+      containers:
+      - name: fastapi-api-composer
+        image: registry.deti/104341/fastapi-api-composer:v1
+        env:
+        - name: DB_HOST
+          value: "postgres-db-composer"
+        - name: DB_NAME
+          value: "xpressdb"
+        - name: DB_USER
+          value: "postgres"
+        - name: DB_PASSWORD
+          value: "formigos1"
+        - name: DB_PORT
+          value: "5432"
+        - name: DATABASE_URL
+          value: "postgresql://postgres:formigos1@postgres-db-composer:5432/xpressdb"
+        - name: AUTH0_DOMAIN
+          value: "dev-ax53r2dultf84l0z.eu.auth0.com"
+        - name: AUTH0_AUDIENCE
+          value: "https://playerxpress-api.com"
+        ports:
+        - containerPort: 8000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fastapi-api-composer
+  namespace: "104341"
+spec:
+  ports:
+    - port: 8000
+  selector:
+    app: fastapi-api-composer
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: react-frontend-composer
+  namespace: "104341"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: react-frontend-composer
+  template:
+    metadata:
+      labels:
+        app: react-frontend-composer
+    spec:
+      containers:
+      - name: react-frontend-composer
+        image: registry.deti/104341/react-frontend-composer:v1
+        ports:
+        - containerPort: 3000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: react-frontend-composer
+  namespace: "104341"
+spec:
+  type: NodePort
+  ports:
+    - port: 3000
+      targetPort: 3000
+      nodePort: 30001
+  selector:
+    app: react-frontend-composer
+
