@@ -1,0 +1,10 @@
+.auth-message {
+  padding: 20px;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 1.2rem;
+  margin: 20px;
+  color: #6c757d;
+}

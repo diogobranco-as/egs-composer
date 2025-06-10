@@ -13,8 +13,8 @@ const Home = () => {
 
   return (
     <div className="home">
-      <h1>Welcome to the Home Page</h1>
-      <p>This is the home page of the application.</p>
+      <h1>Welcome to PlayerXpress</h1>
+      <p>Home of the best game deals</p>
     </div>
   );
 };

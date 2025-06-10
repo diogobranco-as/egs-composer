@@ -4,8 +4,8 @@ import PurchasedGame from '../components/PurchasedGame';
 import '../styles/purchased.css';
 
 const Purchased = () => {
-  const { user } = useAuth0();
-  const userId = user?.sub
+  const { user, isAuthenticated } = useAuth0();
+  const userId = user?.sub;
 
   const [purchasedItems, setPurchasedItems] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -15,7 +15,7 @@ const Purchased = () => {
     if (!userId) return;
     setLoading(true);
     try {
-      const response = await fetch(`http://localhost:8000/v1/purchased/${userId}`);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/v1/purchased/${userId}`);
       if (!response.ok) {
         throw new Error('Failed to fetch purchased items');
       }
@@ -33,6 +33,17 @@ const Purchased = () => {
       fetchPurchased();
     }
   }, [userId, fetchPurchased]);
+
+  if (!isAuthenticated) {
+    return (
+      <div className="purchased">
+        <h1>My Purchased Games</h1>
+        <div className="auth-message">
+          Please sign in to view your purchased games.
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="purchased">

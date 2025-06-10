@@ -1,21 +1,32 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const ProductBox = ({ product }) => {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth0();
 
   const handleReviewClick = () => {
+    if (!isAuthenticated) {
+      alert('Please sign in to view reviews.');
+      return;
+    }
     navigate(`/products/${product.product_id}/reviews`);
   };
 
   const handleBuyClick = async () => {    
+    if (!isAuthenticated) {
+      alert('Please sign in to purchase products.');
+      return;
+    }
+    
     try {
       const paymentData = {
         amount: product.product_price,
         currency: 'EUR',
         product_id: product.product_id
       };
-      window.location.href = `http://localhost:5173?amount=${paymentData.amount}&currency=${paymentData.currency}&product_id=${paymentData.product_id}`;      
+      window.location.href = `${process.env.REACT_APP_XPRESSWAY_URL}?amount=${paymentData.amount}&currency=${paymentData.currency}&product_id=${paymentData.product_id}`;      
     } catch (error) {
       console.error('6. Payment error:', error.message);
       if (error.name === 'TypeError') {

@@ -29,7 +29,7 @@ const Products = () => {
     try {
 
       const auth0_id = encodeURIComponent(user.sub);
-      const response = await fetch(`http://localhost:8000/v1/purchased/${auth0_id}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/v1/purchased/${auth0_id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -66,7 +66,7 @@ const Products = () => {
 
     setLoading(true);
     try {
-      const response = await fetch(`http://localhost:8000/v1/products/?limit=${limit}&offset=${offset}`);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/v1/products/?limit=${limit}&offset=${offset}`);
       if (!response.ok) {
         throw new Error('Failed to fetch products');
       }

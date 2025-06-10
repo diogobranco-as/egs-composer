@@ -11,7 +11,6 @@ import Purchased from './pages/Purchased';
 import './styles/global.css';
 import './styles/app.css';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
 function AppWrapper() {
   return (
@@ -44,7 +43,7 @@ function App() {
           scope: 'openid profile email',
         });
 
-        const res = await fetch(`${API_URL}/v1/users/sync`, {
+        const res = await fetch(`${process.env.REACT_APP_API_URL}/v1/users/sync`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
