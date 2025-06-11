@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: postgres-initdb
-  namespace: "104341"
+  namespace: "player-xpress"
 data:
   init.sql: |
     CREATE EXTENSION IF NOT EXISTS "pgcrypto"; -- Enable UUID generation
@@ -81,7 +81,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: postgres-db-composer
-  namespace: "104341"
+  namespace: "player-xpress"
 spec:
   replicas: 1
   selector:
@@ -124,7 +124,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: postgres-db-composer
-  namespace: "104341"
+  namespace: "player-xpress"
 spec:
   ports:
     - port: 5432
@@ -136,7 +136,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: fastapi-api-composer
-  namespace: "104341"
+  namespace: "player-xpress"
 spec:
   replicas: 1
   selector:
@@ -149,7 +149,7 @@ spec:
     spec:
       containers:
       - name: fastapi-api-composer
-        image: registry.deti/104341/fastapi-api-composer:v2
+        image: registry.deti/player-xpress/fastapi-api-composer:v2
         imagePullPolicy: Always
         env:
         - name: DB_HOST
@@ -176,7 +176,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: fastapi-api-composer
-  namespace: "104341"
+  namespace: "player-xpress"
 spec:
   ports:
     - port: 8000
@@ -188,7 +188,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: react-frontend-composer
-  namespace: "104341"
+  namespace: "player-xpress"
 spec:
   replicas: 1
   selector:
@@ -201,7 +201,7 @@ spec:
     spec:
       containers:
       - name: react-frontend-composer
-        image: registry.deti/104341/react-frontend-composer:v2
+        image: registry.deti/player-xpress/react-frontend-composer:v2
         imagePullPolicy: Always
         ports:
         - containerPort: 3000
@@ -215,7 +215,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: react-frontend-composer
-  namespace: "104341"
+  namespace: "player-xpress"
 spec:
   type: ClusterIP
   ports:
@@ -229,7 +229,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: grupo3-egs-deti.ua.pt
-  namespace: "104341"
+  namespace: "player-xpress"
   annotations:
     kubernetes.io/ingress.class: traefik
     traefik.ingress.kubernetes.io/frontend-entry-points: http,https
@@ -254,3 +254,10 @@ spec:
                 name: react-frontend-composer
                 port:
                   number: 3000
+          - path: /reviews
+            pathType: Prefix
+            backend:
+              service:
+                name: review-api
+                port:
+                  number: 8001

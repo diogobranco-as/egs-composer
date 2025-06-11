@@ -15,7 +15,7 @@ const ReviewWidget = ({ productId }) => {
     }
 
     const script = document.createElement('script');
-    script.src = "http://127.0.0.1:8001/static/review-widget.js";
+    script.src = "https://grupo3-egs-deti.ua.pt/reviews/static/review-widget.js";
     script.async = true;
     script.onload = handleLoad;
     
