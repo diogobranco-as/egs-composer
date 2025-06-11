@@ -20,10 +20,11 @@ const Products = () => {
 
   const limit = 10; // increase later (20? 40?)
   const hasFetched = useRef(false);
-
   const createPurchasedRecord = useCallback(async () => {
     console.log('Creating purchased record...');
-    
+    console.log('hello mfer');
+    console.log('API URL:', process.env.REACT_APP_API_URL);
+
     if (!paymentId || !productId || !user?.sub || hasProcessedPurchase.current) return;
   
     try {

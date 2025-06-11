@@ -41,6 +41,10 @@ services:
       - "3000:3000"
     depends_on:
       - api
+    environment:
+      REACT_APP_API_URL: 'http://localhost:8000'
+      REACT_APP_XPRESSWAY_URL: 'http://localhost:5173'
+      REACT_APP_CHATSERVICE_URL: 'http://localhost:8080'
 
 volumes:
   postgres_data:

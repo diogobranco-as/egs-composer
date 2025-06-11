@@ -11,10 +11,12 @@ load_dotenv()
 app = FastAPI(
     title = "playerxpress-api",
     version = "1.0.",
+    root_path = "/api",
 )
 
 origins = [
     "http://localhost:3000",
+    "https://grupo3-egs-deti.ua.pt",
 ]
 
 app.add_middleware(

@@ -6,7 +6,12 @@ const LogoutButton = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("chatNickname");
-    logout();
+    localStorage.removeItem("internal_user_id");
+    logout({ 
+      logoutParams: { 
+        returnTo: 'https://grupo3-egs-deti.ua.pt/'
+      } 
+    });
   }
 
   return (
