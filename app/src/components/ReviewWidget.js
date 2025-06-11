@@ -13,8 +13,9 @@ const ReviewWidget = ({ productId }) => {
       handleLoad();
       return;
     }
-
+    console.log("hey")
     const script = document.createElement('script');
+    console.log("going to use https://grupo3-egs-deti.ua.pt/reviews/static/review-widget.js");
     script.src = "https://grupo3-egs-deti.ua.pt/reviews/static/review-widget.js";
     script.async = true;
     script.onload = handleLoad;
