@@ -150,7 +150,7 @@ spec:
     spec:
       containers:
       - name: fastapi-api-composer
-        image: registry.deti/player-xpress/fastapi-api-composer:v5
+        image: registry.deti/player-xpress/fastapi-api-composer:v7
         imagePullPolicy: Always
         env:
         - name: DB_HOST
@@ -202,7 +202,7 @@ spec:
     spec:
       containers:
       - name: react-frontend-composer
-        image: registry.deti/player-xpress/react-frontend-composer:v5
+        image: registry.deti/player-xpress/react-frontend-composer:v7
         imagePullPolicy: Always
         ports:
         - containerPort: 3000
@@ -248,13 +248,6 @@ spec:
                 name: fastapi-api-composer
                 port:
                   number: 8000
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: react-frontend-composer
-                port:
-                  number: 3000
           - path: /reviews
             pathType: Prefix
             backend:
@@ -269,3 +262,32 @@ spec:
                 name: frontend-service
                 port:
                   number: 80
+          - path: /assets
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend-service
+                port:
+                  number: 80
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: react-frontend-composer
+                port:
+                  number: 3000
+          - path: /xpressway/frontend
+            pathType: Prefix
+            backend:
+              service:
+                name: xpressway-frontend
+                port:
+                  number: 80
+          - path: /socket.io/
+            pathType: Prefix
+            backend:
+              service:
+                name: flaskapp-service
+                port:
+                  number: 5000
+          
