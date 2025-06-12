@@ -290,4 +290,17 @@ spec:
                 name: flaskapp-service
                 port:
                   number: 5000
-          
+          - path: /compose-assets
+            pathType: Prefix
+            backend:
+              service:
+                name: xpressway-frontend
+                port:
+                  number: 80
+          - path: /xpressway/frontend
+            pathType: Prefix
+            backend:
+              service:
+                name: xpressway-frontend
+                port:
+                  number: 80
