@@ -24,7 +24,9 @@ const Products = () => {
     console.log('Creating purchased record...');
 
     if (!paymentId || !productId || !user?.sub || hasProcessedPurchase.current) return;
-  
+    hasProcessedPurchase.current = true;
+    const newPaymentId = crypto.randomUUID();
+    console.log('Payment ID:', newPaymentId);
     try {
 
       const auth0_id = encodeURIComponent(user.sub);
@@ -34,7 +36,7 @@ const Products = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          payment_id: paymentId,
+          payment_id: newPaymentId,
           product_id: productId,
           user_id: user.sub, 
         }),
@@ -56,6 +58,7 @@ const Products = () => {
       
     } catch (error) {
       console.error('Error creating purchased record:', error.message);
+      hasProcessedPurchase.current = false;
     }
   }, [paymentId, productId, user?.sub, searchParams, navigate]);
   

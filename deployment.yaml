@@ -150,7 +150,7 @@ spec:
     spec:
       containers:
       - name: fastapi-api-composer
-        image: registry.deti/player-xpress/fastapi-api-composer:v7
+        image: registry.deti/player-xpress/fastapi-api-composer:v15
         imagePullPolicy: Always
         env:
         - name: DB_HOST
@@ -202,7 +202,7 @@ spec:
     spec:
       containers:
       - name: react-frontend-composer
-        image: registry.deti/player-xpress/react-frontend-composer:v7
+        image: registry.deti/player-xpress/react-frontend-composer:v15
         imagePullPolicy: Always
         ports:
         - containerPort: 3000
@@ -297,10 +297,11 @@ spec:
                 name: xpressway-frontend
                 port:
                   number: 80
-          - path: /xpressway/frontend
+          - path: /xpressway/backend
             pathType: Prefix
             backend:
               service:
-                name: xpressway-frontend
+                name: xpressway-backend
                 port:
-                  number: 80
+                  number: 8002
+
